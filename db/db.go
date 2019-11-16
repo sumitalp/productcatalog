@@ -3,18 +3,13 @@ package db
 import (
 	"fmt"
 
-	"os"
-
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/sumitalp/productcatalog/models"
 )
 
 func New() *gorm.DB {
-	db, err := gorm.Open("mysql", fmt.Sprintf(
-		"%s:%s@/adcash?charset=utf8&parseTime=True&loc=Local", 
-		os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD")
-		))
+	db, err := gorm.Open("sqlite3", "./adcash.db")
 	if err != nil {
 		fmt.Println("storage err: ", err)
 	}

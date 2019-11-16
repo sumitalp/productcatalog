@@ -1,7 +1,0 @@
-package: productcatalog
-import:
-- package: github.com/jinzhu/gorm
-  version: ~1.9.11
-- package: golang.org/x/crypto
-  subpackages:
-  - bcrypt
