@@ -19,18 +19,15 @@ import (
 func TestListProductsCaseSuccess(t *testing.T) {
 	tearDown()
 	setup()
-	jwtMiddleware := middleware.JWT(utils.JWTSecret)
+
 	e := router.New()
 	req := httptest.NewRequest(echo.GET, "/api/products", nil)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	req.Header.Set(echo.HeaderAuthorization, authHeader(utils.GenerateJWT(1)))
+	
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	err := jwtMiddleware(func(context echo.Context) error {
-		return h.Products(c)
-	})(c)
 	
-	assert.NoError(t, err)
+	assert.NoError(t, h.Products(c))
 	if assert.Equal(t, http.StatusOK, rec.Code) {
 		var aa productListResponse
 		err := json.Unmarshal(rec.Body.Bytes(), &aa)
@@ -42,19 +39,15 @@ func TestListProductsCaseSuccess(t *testing.T) {
 func TestGetProductCaseSuccess(t *testing.T) {
 	tearDown()
 	setup()
-	jwtMiddleware := middleware.JWT(utils.JWTSecret)
 	req := httptest.NewRequest(echo.GET, "/api/products/:slug", nil)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	req.Header.Set(echo.HeaderAuthorization, authHeader(utils.GenerateJWT(1)))
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetPath("/api/products/:slug")
 	c.SetParamNames("slug")
 	c.SetParamValues("product1-slug")
-	err := jwtMiddleware(func(context echo.Context) error {
-		return h.GetProduct(c)
-	})(c)
-	assert.NoError(t, err)
+
+	assert.NoError(t, h.GetProduct(c))
 	
 	if assert.Equal(t, http.StatusOK, rec.Code) {
 		var a singleProductResponse
@@ -146,18 +139,14 @@ func TestDeleteProductCaseSuccess(t *testing.T) {
 func TestListCategoriesCaseSuccess(t *testing.T) {
 	tearDown()
 	setup()
-	jwtMiddleware := middleware.JWT(utils.JWTSecret)
+
 	e := router.New()
 	req := httptest.NewRequest(echo.GET, "/api/categories", nil)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	req.Header.Set(echo.HeaderAuthorization, authHeader(utils.GenerateJWT(1)))
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	err := jwtMiddleware(func(context echo.Context) error {
-		return h.Categories(c)
-	})(c)
 	
-	assert.NoError(t, err)
+	assert.NoError(t, h.Categories(c))
 	if assert.Equal(t, http.StatusOK, rec.Code) {
 		var aa categoryListResponse
 		err := json.Unmarshal(rec.Body.Bytes(), &aa)
@@ -169,19 +158,15 @@ func TestListCategoriesCaseSuccess(t *testing.T) {
 func TestGetCategoryCaseSuccess(t *testing.T) {
 	tearDown()
 	setup()
-	jwtMiddleware := middleware.JWT(utils.JWTSecret)
 	req := httptest.NewRequest(echo.GET, "/api/categories/:id", nil)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	req.Header.Set(echo.HeaderAuthorization, authHeader(utils.GenerateJWT(1)))
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetPath("/api/products/:id")
 	c.SetParamNames("id")
 	c.SetParamValues("1")
-	err := jwtMiddleware(func(context echo.Context) error {
-		return h.GetCategory(c)
-	})(c)
-	assert.NoError(t, err)
+
+	assert.NoError(t, h.GetCategory(c))
 	
 	if assert.Equal(t, http.StatusOK, rec.Code) {
 		var a singleCategoryResponse

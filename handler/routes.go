@@ -16,14 +16,34 @@ func (h *Handler) Register(v1 *echo.Group) {
 	user.GET("", h.CurrentUser)
 	user.PUT("", h.UpdateUser)
 
-	categories := v1.Group("categories", jwtMiddleware)
+	categories := v1.Group("categories", middleware.JWTWithConfig(
+		middleware.JWTConfig{
+			Skipper: func(c echo.Context) bool {
+				if c.Request().Method == "GET" {
+					return true
+				}
+				return false
+			},
+			SigningKey: utils.JWTSecret,
+		},
+	))
 	categories.POST("", h.CreateCategory)
 	categories.GET("", h.Categories)
 	categories.GET("/:slug", h.GetCategory)
 	categories.PUT("/:slug", h.UpdateCategory)
 	categories.DELETE("/:slug", h.DeleteCategory)
 
-	products := v1.Group("products", jwtMiddleware)
+	products := v1.Group("products", middleware.JWTWithConfig(
+		middleware.JWTConfig{
+			Skipper: func(c echo.Context) bool {
+				if c.Request().Method == "GET" {
+					return true
+				}
+				return false
+			},
+			SigningKey: utils.JWTSecret,
+		},
+	))
 	products.POST("", h.CreateProduct)
 	products.GET("", h.Products)
 	products.GET("/:slug", h.GetProduct)
