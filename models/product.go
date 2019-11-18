@@ -12,12 +12,12 @@ type Product struct {
 	Image       string
 	Owner       User
 	OwnerID     uint
-	Favorites   []User `gorm:"many2many:favorites;"`
-	Tags        []Tag  `gorm:"many2many:product_tags;association_autocreate:false"`
+	Categories  []Category `gorm:"many2many:product_categories;association_autocreate:false"`
 }
 
-type Tag struct {
+type Category struct {
 	gorm.Model
-	Tag      string    `gorm:"unique_index"`
-	Products []Product `gorm:"many2many:product_tags;"`
+	Category    string `gorm:"unique_index"`
+	Description string
+	Products    []Product `gorm:"many2many:product_tags;"`
 }

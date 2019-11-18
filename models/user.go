@@ -9,21 +9,12 @@ import (
 
 type User struct {
 	gorm.Model
-	Username   string `gorm:"unique_index;not null"`
-	Email      string `gorm:"unique_index;not null"`
-	Password   string `gorm:"not null"`
-	Bio        *string
-	Image      *string
-	Followers  []Follow `gorm:"foreignkey:FollowingID"`
-	Followings []Follow `gorm:"foreignkey:FollowerID"`
-	// Favorites  []Article `gorm:"many2many:favorites;"`
-}
-
-type Follow struct {
-	Follower    User
-	FollowerID  uint `gorm:"primary_key" sql:"type:int not null"`
-	Following   User
-	FollowingID uint `gorm:"primary_key" sql:"type:int not null"`
+	Username  string `gorm:"unique_index;not null"`
+	Email     string `gorm:"unique_index;not null"`
+	Password  string `gorm:"not null"`
+	Bio       *string
+	Image     *string
+	// Products []Product `gorm:"many2many:products;"`
 }
 
 func (u *User) HashPassword(plain string) (string, error) {
