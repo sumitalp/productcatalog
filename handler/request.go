@@ -8,9 +8,9 @@ import (
 
 type userRegisterRequest struct {
 	User struct {
-		Username string `json:"username" validate:"required"`
-		Email    string `json:"email" validate:"required,email"`
-		Password string `json:"password" validate:"required"`
+		Username string `json:"username" validate:"required" xml:"username"`
+		Email    string `json:"email" validate:"required,email" xml:"email"`
+		Password string `json:"password" validate:"required" xml:"password"`
 	} `json:"user" xml:"user"`
 }
 
@@ -33,11 +33,11 @@ func (r *userRegisterRequest) bind(c echo.Context, u *models.User) error {
 
 type userUpdateRequest struct {
 	User struct {
-		Username string `json:"username"`
-		Email    string `json:"email" validate:"email"`
-		Password string `json:"password"`
-		Bio      string `json:"bio"`
-		Image    string `json:"image"`
+		Username string `json:"username" xml:"username"`
+		Email    string `json:"email" validate:"email" xml:"email"`
+		Password string `json:"password" xml:"password"`
+		Bio      string `json:"bio" xml:"bio"`
+		Image    string `json:"image" xml:"image"`
 	} `json:"user" xml:"user"`
 }
 
@@ -101,8 +101,8 @@ type productCreateRequest struct {
 		Title       string   `json:"title" validate:"required" xml:"title"`
 		Description string   `json:"description" validate:"required" xml:"description"`
 		Image        string   `json:"image" xml:"image"`
-		Categories        []string `json:"categoryList, omitempty" xml:"categoryList"`
-	} `json:"product"`
+		Categories        []string `json:"categoryList, omitempty" xml:"categories>category"`
+	} `json:"product" xml:"product"`
 }
 
 func (r *productCreateRequest) bind(c echo.Context, a *models.Product) error {
@@ -129,8 +129,8 @@ type productUpdateRequest struct {
 		Title       string   `json:"title" xml:"title"`
 		Description string   `json:"description" xml:"description"`
 		Image        string   `json:"image" xml:"image"`
-		Categories        []string `json:"categoriesList" xml:"categoryList"`
-	} `json:"product"`
+		Categories        []string `json:"categoriesList" xml:"categories>category"`
+	} `json:"product" xml:"product"`
 }
 
 func (r *productUpdateRequest) populate(a *models.Product) {
@@ -157,7 +157,7 @@ type categoryCreateRequest struct {
 	Category struct {
 		Title       string   `json:"title" validate:"required" xml:"title"`
 		Description string   `json:"description" xml:"description"`
-	} `json:"category"`
+	} `json:"category" xml:"category"`
 }
 
 func (r *categoryCreateRequest) bind(c echo.Context, a *models.Category) error {
@@ -177,7 +177,7 @@ type categoryUpdateRequest struct {
 	Category struct {
 		Title       string   `json:"title" xml:"title"`
 		Description string   `json:"description" xml:"description"`
-	} `json:"category"`
+	} `json:"category" xml:"category"`
 }
 
 func (r *categoryUpdateRequest) populate(c *models.Category) {
