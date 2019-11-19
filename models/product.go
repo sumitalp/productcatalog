@@ -1,11 +1,18 @@
 package models
 
 import (
+	"time"
 	"github.com/jinzhu/gorm"
 )
 
+type ModelBase struct {
+	ID        uint       `gorm:"primary_key"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
+}
+
 type Product struct {
-	gorm.Model
+	ModelBase
 	Slug        string `gorm:"unique_index;not null"`
 	Title       string `gorm:"not null"`
 	Description string
@@ -16,8 +23,10 @@ type Product struct {
 }
 
 type Category struct {
-	gorm.Model
+	ModelBase
 	Category    string `gorm:"unique_index"`
 	Description string
 	Products    []Product `gorm:"many2many:product_tags;"`
 }
+
+var GormDB *gorm.DB

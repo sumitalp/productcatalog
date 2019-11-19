@@ -10,11 +10,11 @@ import (
 
 type userResponse struct {
 	User struct {
-		Username string  `json:"username"`
-		Email    string  `json:"email"`
-		Bio      *string `json:"bio"`
-		Image    *string `json:"image"`
-		Token    string  `json:"token"`
+		Username string  `json:"username" xml:"username"`
+		Email    string  `json:"email" xml:"email"`
+		Bio      *string `json:"bio" xml:"bio"`
+		Image    *string `json:"image" xml:"image"`
+		Token    string  `json:"token" xml:"token"`
 	} `json:"user" xml:"user"`
 }
 
@@ -33,7 +33,7 @@ type productResponse struct {
 	Title          string    `json:"title" xml:"title"`
 	Description    string    `json:"description" xml:"description"`
 	Image           string    `json:"image" xml:"image"`
-	CategoryList        []string  `json:"categoryList" xml:"categoryList"`
+	CategoryList        []string  `json:"categoryList" xml:"categories>category"`
 	CreatedAt      time.Time `json:"createdAt" xml:"createdAt"`
 	UpdatedAt      time.Time `json:"updatedAt" xml:"updatedAt"`
 	Owner         struct {
@@ -48,7 +48,7 @@ type singleProductResponse struct {
 }
 
 type productListResponse struct {
-	Products      []*productResponse `json:"products" xml:"products"`
+	Products      []*productResponse `json:"products" xml:"products>product"`
 	ProductsCount int                `json:"productsCount" xml:"productsCount"`
 }
 
@@ -98,23 +98,25 @@ func newProductListResponse(us user.RepositoryInterface, userID uint, products [
 
 // Category
 type categoryResponse struct {
-	Title          string    `json:"title"`
-	Description    string    `json:"description"`
-	CreatedAt      time.Time `json:"createdAt"`
-	UpdatedAt      time.Time `json:"updatedAt"`
+	ID			   uint      `json:"id" xml:"id"`
+	Title          string    `json:"title" xml:"title"`
+	Description    string    `json:"description" xml:"description"`
+	CreatedAt      time.Time `json:"createdAt" xml:"createdAt"`
+	UpdatedAt      time.Time `json:"updatedAt" xml:"updatedAt"`
 }
 
 type singleCategoryResponse struct {
-	Category *categoryResponse `json:"category"`
+	Category *categoryResponse `json:"category" xml:"category"`
 }
 
 type categoryListResponse struct {
-	Categories      []*categoryResponse `json:"categories"`
-	CategoriesCount int                `json:"categoriesCount"`
+	Categories      []*categoryResponse `json:"categories" xml:"categories>category"`
+	CategoriesCount int                `json:"categoriesCount" xml:"categoriesCount"`
 }
 
 func newCategoryResponse(c echo.Context, a *models.Category) *singleCategoryResponse {
 	ar := new(categoryResponse)
+	ar.ID = a.ID
 	ar.Title = a.Category
 	ar.Description = a.Description
 	ar.CreatedAt = a.CreatedAt
@@ -128,6 +130,7 @@ func newCategoryListResponse(us user.RepositoryInterface, userID uint, categorie
 	r.Categories = make([]*categoryResponse, 0)
 	for _, a := range categories {
 		ar := new(categoryResponse)
+		ar.ID = a.ID
 		ar.Title = a.Category
 		ar.Description = a.Description
 		ar.CreatedAt = a.CreatedAt
