@@ -26,7 +26,7 @@ type Category struct {
 	ModelBase
 	Category    string `gorm:"unique_index"`
 	Description string
-	Products    []Product `gorm:"many2many:product_tags;"`
+	Products    []Product `gorm:"many2many:products;"`
 }
 
 var GormDB *gorm.DB

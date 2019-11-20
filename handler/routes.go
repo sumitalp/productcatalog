@@ -16,7 +16,7 @@ func (h *Handler) Register(v1 *echo.Group) {
 	user.GET("", h.CurrentUser)
 	user.PUT("", h.UpdateUser)
 
-	categories := v1.Group("categories", middleware.JWTWithConfig(
+	categories := v1.Group("/categories", middleware.JWTWithConfig(
 		middleware.JWTConfig{
 			Skipper: func(c echo.Context) bool {
 				if c.Request().Method == "GET" {
@@ -33,7 +33,7 @@ func (h *Handler) Register(v1 *echo.Group) {
 	categories.PUT("/:slug", h.UpdateCategory)
 	categories.DELETE("/:slug", h.DeleteCategory)
 
-	products := v1.Group("products", middleware.JWTWithConfig(
+	products := v1.Group("/products", middleware.JWTWithConfig(
 		middleware.JWTConfig{
 			Skipper: func(c echo.Context) bool {
 				if c.Request().Method == "GET" {
